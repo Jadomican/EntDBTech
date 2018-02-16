@@ -3,7 +3,7 @@
 
 
 # Read in data from the csv dataset
-health <- read.table(file = "C:/Users/jadom_000/Desktop/Labsheets and Slides/EDT/CardiologyRel.csv", header=TRUE, sep =",")
+health <- read.table(file = "C:/Users/x00123156/Downloads/CardiologyRel.csv", header=TRUE, sep =",")
 
 
 #For each predictor variable, where appropriate,find the following
@@ -55,5 +55,4 @@ Skewness(health$thalach)
 Skewness(health$oldpeak)
 Skewness(health$ca)
 
-
-
+ggplot(health, aes(x = health$age, fill = health$class)) + geom_histogram(position = "fill")
