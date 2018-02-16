@@ -1,10 +1,10 @@
 # Enterprise Database Technologies
 # X00119321 Jason Domican
+# X00123156 Robert Fitzgerald
 
 
 # Read in data from the csv dataset
-health <- read.table(file = "C:/Users/x00123156/Downloads/CardiologyRel.csv", header=TRUE, sep =",")
-
+health <- read.table(file = "https://drive.google.com/uc?export=download&id=12ndSWZTA-2YsxWEqZMHgBV6sitAh1ktc", header=TRUE, sep =",")
 
 #For each predictor variable, where appropriate,find the following
 
