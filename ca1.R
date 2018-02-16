@@ -66,8 +66,12 @@ PlotBar <- function(myData, labelIn) {
   geom_bar(position = "fill") + xlab(labelIn)
 }
 
+PlotScatterPair <- function(xIn, yIn, xlabIn, ylabIn) {
+  ggplot(health, aes(xIn, yIn )) + geom_point(size =2) + xlab(xlabIn) + ylab(ylabIn)
+}
+
 PlotHistogram(health$age, "Age")
-PlotHistogram(health$trestbps, "Resting BP")
+PlotHistogram(health$trestbps, "Resting Blood Pressure")
 PlotHistogram(health$cholesterol, "Cholesterol")
 PlotHistogram(health$diastbpexerc, "Diastolic exercising blood pressure")
 PlotHistogram(health$thalach, "Maximum heart rate achieved")
@@ -81,3 +85,11 @@ PlotBar(health$restecg, "Restecg")
 PlotBar(health$exang, "Exang")
 PlotBar(health$slope, "Slope")
 PlotBar(health$thal, "Thal")
+
+#Scatter plot for each numeric pair
+PlotScatterPair(health$age, health$trestbps, "Age", "Resting Blood Pressure")
+PlotScatterPair(health$age, health$cholesterol, "Age", "Cholesterol")
+PlotScatterPair(health$age, health$diastbpexerc, "Age", "Diastolic exercising blood pressure")
+PlotScatterPair(health$age, health$thalach, "Age", "Maximum heart rate achieved")
+PlotScatterPair(health$age, health$oldpeak, "Age", "ST depression induced by exercise relative to rest")
+PlotScatterPair(health$age, health$ca, "Age", "Number of coloured vessels")
