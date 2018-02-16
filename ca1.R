@@ -55,4 +55,17 @@ Skewness(health$thalach)
 Skewness(health$oldpeak)
 Skewness(health$ca)
 
-ggplot(health, aes(x = health$age, fill = health$class)) + geom_histogram(position = "fill")
+# Plots histogram with target variable overlay
+PlotHistogram <- function(myData, labelIn) {
+  ggplot(health, aes(x = myData, fill = health$class)) + 
+  geom_histogram(colour = "black", position = "fill") + xlab(labelIn)
+}
+
+PlotHistogram(health$age, "Age")
+PlotHistogram(health$trestbps, "Resting BP")
+PlotHistogram(health$cholesterol, "Cholesterol")
+PlotHistogram(health$diastbpexerc, "Diastolic exercising blood pressure")
+PlotHistogram(health$thalach, "Maximum heart rate achieved")
+PlotHistogram(health$oldpeak, "ST depression induced by exercise relative to rest")
+PlotHistogram(health$ca, "Number of coloured vessels")
+
