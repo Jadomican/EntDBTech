@@ -61,6 +61,11 @@ PlotHistogram <- function(myData, labelIn) {
   geom_histogram(colour = "black", position = "fill") + xlab(labelIn)
 }
 
+PlotBar <- function(myData, labelIn) {
+  ggplot(health, aes(x = myData, fill = health$class)) +
+  geom_bar(position = "fill") + xlab(labelIn)
+}
+
 PlotHistogram(health$age, "Age")
 PlotHistogram(health$trestbps, "Resting BP")
 PlotHistogram(health$cholesterol, "Cholesterol")
@@ -69,3 +74,10 @@ PlotHistogram(health$thalach, "Maximum heart rate achieved")
 PlotHistogram(health$oldpeak, "ST depression induced by exercise relative to rest")
 PlotHistogram(health$ca, "Number of coloured vessels")
 
+PlotBar(health$sex, "Sex")
+PlotBar(health$cp, "Cp")
+PlotBar(health$Fasting.blood.sugar...120, "Blood Sugar")
+PlotBar(health$restecg, "Restecg")
+PlotBar(health$exang, "Exang")
+PlotBar(health$slope, "Slope")
+PlotBar(health$thal, "Thal")
