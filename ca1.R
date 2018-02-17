@@ -11,6 +11,9 @@ health <- read.table(file = "https://drive.google.com/uc?export=download&id=12nd
 # Get the summary of the entire health dataset
 summary(health)
 
+#Discretise variable for number of coloured vessels (originally numeric)
+ca_factor <- factor(health$ca)
+
 #https://stackoverflow.com/questions/2547402/is-there-a-built-in-function-for-finding-the-mode
 Mode <- function(x) {
   ux <- unique(x)
@@ -29,7 +32,7 @@ Mode(health$thalach)
 Mode(health$exang)
 Mode(health$oldpeak)
 Mode(health$slope)
-Mode(health$ca)
+Mode(ca_factor)
 Mode(health$thal)
 Mode(health$class)
 
@@ -40,7 +43,6 @@ sd(health$cholesterol, na.rm = TRUE)
 sd(health$diastbpexerc)
 sd(health$thalach)
 sd(health$oldpeak)
-sd(health$ca)
 
 #Define a function to calculate skewness
 Skewness <- function(x) {
@@ -53,7 +55,6 @@ Skewness(health$cholesterol)
 Skewness(health$diastbpexerc)
 Skewness(health$thalach)
 Skewness(health$oldpeak)
-Skewness(health$ca)
 
 # Plots histogram with target variable overlay
 PlotHistogram <- function(myData, labelIn) {
@@ -63,7 +64,7 @@ PlotHistogram <- function(myData, labelIn) {
 
 PlotBar <- function(myData, labelIn) {
   ggplot(health, aes(x = myData, fill = health$class)) +
-  geom_bar(position = "fill") + xlab(labelIn)
+  geom_bar(colour = "black", position = "fill") + xlab(labelIn)
 }
 
 PlotScatterPair <- function(xIn, yIn, xlabIn, ylabIn) {
@@ -76,7 +77,6 @@ PlotHistogram(health$cholesterol, "Cholesterol")
 PlotHistogram(health$diastbpexerc, "Diastolic exercising blood pressure")
 PlotHistogram(health$thalach, "Maximum heart rate achieved")
 PlotHistogram(health$oldpeak, "ST depression induced by exercise relative to rest")
-PlotHistogram(health$ca, "Number of coloured vessels")
 
 PlotBar(health$sex, "Sex")
 PlotBar(health$cp, "Cp")
@@ -85,6 +85,7 @@ PlotBar(health$restecg, "Restecg")
 PlotBar(health$exang, "Exang")
 PlotBar(health$slope, "Slope")
 PlotBar(health$thal, "Thal")
+PlotBar(ca_factor, "Number of miscoloured blood vessels")
 
 #Scatter plot for each numeric pair
 PlotScatterPair(health$age, health$trestbps, "Age", "Resting Blood Pressure")
@@ -92,4 +93,4 @@ PlotScatterPair(health$age, health$cholesterol, "Age", "Cholesterol")
 PlotScatterPair(health$age, health$diastbpexerc, "Age", "Diastolic exercising blood pressure")
 PlotScatterPair(health$age, health$thalach, "Age", "Maximum heart rate achieved")
 PlotScatterPair(health$age, health$oldpeak, "Age", "ST depression induced by exercise relative to rest")
-PlotScatterPair(health$age, health$ca, "Age", "Number of coloured vessels")
+
