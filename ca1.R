@@ -94,3 +94,49 @@ PlotScatterPair(health$age, health$diastbpexerc, "Age", "Diastolic exercising bl
 PlotScatterPair(health$age, health$thalach, "Age", "Maximum heart rate achieved")
 PlotScatterPair(health$age, health$oldpeak, "Age", "ST depression induced by exercise relative to rest")
 
+#Uses nortest package to determine Normality
+ad.test(health$age)
+ad.test(health$age)
+ad.test(health$trestbps)
+ad.test(health$cholesterol)
+ad.test(health$diastbpexerc)
+ad.test(health$thalach)
+ad.test(health$oldpeak)
+
+age <- health$age
+sex <- health$sex
+cp <- health$cp
+trestbps<- health$trestbps
+cholesterol <- health$cholesterol
+Fasting.blood.sugar...120 <- health$Fasting.blood.sugar...120
+restecg <- health$restecg
+diastbpexerc <- health$diastbpexerc
+thalach <- health$thalach
+exang <- health$exang
+oldpeak <- health$oldpeak
+slope<- health$slope
+ca <- health$ca
+thal <- health$thal
+class <- health$class
+
+d <- data.frame(age=rnorm(308),
+                sex=rnorm(308),
+                cp=rnorm(308),
+                trestbps=rnorm(308),
+                cholesterol=rnorm(308),
+                Fasting.blood.sugar...120=rnorm(308),
+                restecg=rnorm(308),
+                diastbpexerc=rnorm(308),
+                thalach=rnorm(308),
+                exang=rnorm(308),
+                oldpeak=rnorm(308),
+                slope=rnorm(308),
+                ca=rnorm(308),
+                thal=rnorm(308),
+                class=rnorm(308))
+M <- cor(d)
+corrplot(M,method = 'ellipse')
+
+
+
+
