@@ -4,7 +4,7 @@
 
 
 # Read in data from the csv dataset
-health <- read.table(file = "https://drive.google.com/uc?export=download&id=12ndSWZTA-2YsxWEqZMHgBV6sitAh1ktc", header=TRUE, sep =",")
+health <- read.table(file = "https://drive.google.com/uc?export=download&id=12ndSWZTA-2YsxWEqZMHgBV6sitAh1ktc", header=TRUE, sep =",", stringsAsFactors = FALSE)
 
 #For each predictor variable, where appropriate,find the following
 
@@ -119,6 +119,8 @@ ca <- health$ca
 thal <- health$thal
 class <- health$class
 
+
+#Correlation
 d <- data.frame(age=rnorm(308),
                 sex=rnorm(308),
                 cp=rnorm(308),
@@ -138,5 +140,27 @@ M <- cor(d)
 corrplot(M,method = 'ellipse')
 
 
+#Equal with binning, library("classInt")
+classIntervals(health$age, 5)
+x <- classIntervals(health$age, 5, style = 'equal')
+
+#http://www.learnbymarketing.com/tutorials/k-means-clustering-in-r-example/
+#K-means clustering, package 'stats' used
+k <- kmeans(health$age, centers = 5)
+#Cluster centers
+k$center
+
+#k$withinss - the sum of the square of the distance from each data point to the cluster center.  Lower is better.
+#High means outliersor you need more clusters.
+k$withinss
+
+#k$betweenss tells you the sum of the squared distance between cluster centers.
+#Ideally you want cluster centers far apart from each other.
+k$betweenss
+#Count of data points in each cluster
+table(k$cluster)
+
+
+#Choose a skewed numeric variable - Oldpeak is most skewed variable
 
 
