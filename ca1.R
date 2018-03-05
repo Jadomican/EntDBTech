@@ -149,9 +149,28 @@ corrplot(M,method = 'ellipse')
 classIntervals(health$age, 5)
 x <- classIntervals(health$age, 5, style = 'equal')
 
+age_EW <- health$age
+
+n <- length(health$age)
+nbins <- 3
+
+whichbin <- c(rep(0, n))
+
+range.age_EW <- max(age_EW) - min(age_EW) + 1
+binwidth <- round(range.age_EW / nbins)
+for(i in 1:nbins) {
+  for(j in 1:n) {
+    if ((i-1)*binwidth < age_EW[j] && age_EW[j] <= (i)*binwidth)
+      whichbin[j] <- i
+  }
+}
+whichbin
+age_EW
+
+
 #http://www.learnbymarketing.com/tutorials/k-means-clustering-in-r-example/
 #K-means clustering, package 'stats' used
-k <- kmeans(health$age, centers = 5)
+k <- kmeans(health$age, centers = 4)
 #Cluster centers
 k$center
 
@@ -166,11 +185,15 @@ k$betweenss
 table(k$cluster)
 
 
+
 #Choose a skewed numeric variable - Oldpeak is most skewed variable
 
 #Z-score
 oldpeak_z <- scale(health$oldpeak, center = TRUE, scale = TRUE)
 Skewness(health$oldpeak)
 Skewness(oldpeak_z)
+
+
+
 
 
