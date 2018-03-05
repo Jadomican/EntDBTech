@@ -11,8 +11,9 @@ health <- read.table(file = "https://drive.google.com/uc?export=download&id=12nd
 library(nortest)
 library(ggplot2)
 library(stats)
-
-
+library(e1071)
+library(corrplot)
+library(classInt)
 #For each predictor variable, where appropriate,find the following
 
 
@@ -60,8 +61,11 @@ sd(health$oldpeak)
 
 #Define a function to calculate skewness
 Skewness <- function(x) {
-  return (3 * ((mean(x, na.rm = TRUE) - median(x, na.rm = TRUE))) / sd(x, na.rm = TRUE))
-}
+  #return (3 * (mean(x, na.rm = TRUE) - median(x, na.rm = TRUE))) / sd(x, na.rm = TRUE)
+  
+  #Call e1071 package
+  return (skewness(x, na.rm = TRUE))
+  }
 
 #Call skewness function on each numeric attribute
 Skewness(health$age)
@@ -217,12 +221,19 @@ table(k$cluster)
 
 #Choose a skewed numeric variable - Oldpeak is most skewed variable
 
-#Z-score
+#Z-score Standardisation
 oldpeak_z <- scale(health$oldpeak, center = TRUE, scale = TRUE)
+
+#Natural Log transformation
+natlog.oldpeak <- log(health$oldpeak)
+natlog.oldpeak
+
+#Square Root transformation
+sqrt.oldpeak <- sqrt(health$oldpeak)
+sqrt.oldpeak
+
 Skewness(health$oldpeak)
 Skewness(oldpeak_z)
-
-
-
-
+Skewness(sqrt.oldpeak)
+Skewness(natlog.oldpeak)
 
