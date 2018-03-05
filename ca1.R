@@ -6,6 +6,11 @@
 # Read in data from the csv dataset
 health <- read.table(file = "https://drive.google.com/uc?export=download&id=12ndSWZTA-2YsxWEqZMHgBV6sitAh1ktc", header=TRUE, sep =",", stringsAsFactors = FALSE)
 
+library(nortest)
+library(ggplot2)
+library(stats)
+
+
 #For each predictor variable, where appropriate,find the following
 
 # Get the summary of the entire health dataset
@@ -162,5 +167,10 @@ table(k$cluster)
 
 
 #Choose a skewed numeric variable - Oldpeak is most skewed variable
+
+#Z-score
+oldpeak_z <- scale(health$oldpeak, center = TRUE, scale = TRUE)
+Skewness(health$oldpeak)
+Skewness(oldpeak_z)
 
 
