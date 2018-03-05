@@ -232,8 +232,13 @@ natlog.oldpeak
 sqrt.oldpeak <- sqrt(health$oldpeak)
 sqrt.oldpeak
 
+#Inverse Square Root transformation
+invsqrt.oldpeak <- 1/sqrt(health$oldpeak)
+invsqrt.oldpeak
+
 Skewness(health$oldpeak)
 Skewness(oldpeak_z)
 Skewness(sqrt.oldpeak)
 Skewness(natlog.oldpeak)
+Skewness(invsqrt.oldpeak)
 
