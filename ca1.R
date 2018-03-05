@@ -4,8 +4,7 @@
 
 
 # Read in data from the csv dataset (Hosted on Google Drive)
-health <- read.table(file = "https://drive.google.com/uc?export=download&id=12ndSWZTA-2YsxWEqZMHgBV6sitAh1ktc", header=TRUE, sep =",", stringsAsFactors = FALSE)
-
+health <- read.table(file = "https://drive.google.com/uc?export=download&id=1KBKBW61L-ulGX83Ib31k-1-gfW2Zn8ZV", header=TRUE, sep =",", stringsAsFactors = FALSE)
 
 #Include libraries
 library(nortest)
@@ -14,8 +13,6 @@ library(stats)
 library(e1071)
 library(corrplot)
 library(classInt)
-#For each predictor variable, where appropriate,find the following
-
 
 # Get the summary of the entire health dataset (Min, Max, Mean and Median provided here)
 summary(health)
