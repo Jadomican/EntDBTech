@@ -20,6 +20,8 @@ library(classInt)
 # Get the summary of the entire health dataset (Min, Max, Mean and Median provided here)
 summary(health)
 
+#Percentage of missing values of whole data frame
+mean(is.na(health)) * 100
 
 #Discretise variable for number of coloured vessels (originally numeric)
 ca_factor <- factor(health$ca)
@@ -57,6 +59,52 @@ sd(health$cholesterol, na.rm = TRUE)
 sd(health$diastbpexerc)
 sd(health$thalach)
 sd(health$oldpeak)
+
+
+#Uses nortest package to determine Normality
+ad.test(health$age)
+ad.test(health$trestbps)
+ad.test(health$cholesterol)
+ad.test(health$diastbpexerc)
+ad.test(health$thalach)
+ad.test(health$oldpeak)
+
+
+age <- health$age
+sex <- health$sex
+cp <- health$cp
+trestbps<- health$trestbps
+cholesterol <- health$cholesterol
+Fasting.blood.sugar...120 <- health$Fasting.blood.sugar...120
+restecg <- health$restecg
+diastbpexerc <- health$diastbpexerc
+thalach <- health$thalach
+exang <- health$exang
+oldpeak <- health$oldpeak
+slope<- health$slope
+ca <- health$ca
+thal <- health$thal
+class <- health$class
+
+
+#Correlation between predictor variables
+d <- data.frame(age=rnorm(308),
+                sex=rnorm(308),
+                cp=rnorm(308),
+                trestbps=rnorm(308),
+                cholesterol=rnorm(308),
+                Fasting.blood.sugar...120=rnorm(308),
+                restecg=rnorm(308),
+                diastbpexerc=rnorm(308),
+                thalach=rnorm(308),
+                exang=rnorm(308),
+                oldpeak=rnorm(308),
+                slope=rnorm(308),
+                ca=rnorm(308),
+                thal=rnorm(308),
+                class=rnorm(308))
+M <- cor(d)
+corrplot(M,method = 'ellipse')
 
 
 #Define a function to calculate skewness
@@ -129,53 +177,6 @@ PlotScatterPair(health$cholesterol, health$oldpeak, "Cholesterol", "Maximum hear
 PlotScatterPair(health$diastbpexerc, health$thalach, "Diastolic exercising blood pressure", "Maximum heart rate achieved")
 PlotScatterPair(health$diastbpexerc, health$oldpeak, "Diastolic exercising blood pressure", "ST depression induced by exercise relative to rest")
 PlotScatterPair(health$thalach, health$oldpeak, "Maximum heart rate achieved", "ST depression induced by exercise relative to rest")
-
-
-#Uses nortest package to determine Normality
-ad.test(health$age)
-ad.test(health$age)
-ad.test(health$trestbps)
-ad.test(health$cholesterol)
-ad.test(health$diastbpexerc)
-ad.test(health$thalach)
-ad.test(health$oldpeak)
-
-
-age <- health$age
-sex <- health$sex
-cp <- health$cp
-trestbps<- health$trestbps
-cholesterol <- health$cholesterol
-Fasting.blood.sugar...120 <- health$Fasting.blood.sugar...120
-restecg <- health$restecg
-diastbpexerc <- health$diastbpexerc
-thalach <- health$thalach
-exang <- health$exang
-oldpeak <- health$oldpeak
-slope<- health$slope
-ca <- health$ca
-thal <- health$thal
-class <- health$class
-
-
-#Correlation
-d <- data.frame(age=rnorm(308),
-                sex=rnorm(308),
-                cp=rnorm(308),
-                trestbps=rnorm(308),
-                cholesterol=rnorm(308),
-                Fasting.blood.sugar...120=rnorm(308),
-                restecg=rnorm(308),
-                diastbpexerc=rnorm(308),
-                thalach=rnorm(308),
-                exang=rnorm(308),
-                oldpeak=rnorm(308),
-                slope=rnorm(308),
-                ca=rnorm(308),
-                thal=rnorm(308),
-                class=rnorm(308))
-M <- cor(d)
-corrplot(M,method = 'ellipse')
 
 
 #Equal with binning, library("classInt")
