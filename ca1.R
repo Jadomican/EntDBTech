@@ -69,6 +69,15 @@ ad.test(health$diastbpexerc)
 ad.test(health$thalach)
 ad.test(health$oldpeak)
 
+#Uses the Shapiro-Wilks test to determine normality. If the p-value is > 0.05, passes 
+#normality test and allows you to state no significant departure from normality was found
+shapiro.test(health$age)
+shapiro.test(health$trestbps)
+shapiro.test(health$cholesterol)
+shapiro.test(health$diastbpexerc)
+shapiro.test(health$thalach)
+shapiro.test(health$oldpeak)
+
 
 age <- health$age
 sex <- health$sex
@@ -113,7 +122,7 @@ Skewness <- function(x) {
   
   #Call e1071 package
   return (skewness(x, na.rm = TRUE))
-  }
+}
 
 #Call skewness function on each numeric attribute
 Skewness(health$age)
@@ -182,25 +191,22 @@ PlotScatterPair(health$thalach, health$oldpeak, "Maximum heart rate achieved", "
 #Equal with binning, library("classInt")
 classIntervals(health$age, 5)
 x <- classIntervals(health$age, 5, style = 'equal')
-
-age_EW <- health$age
+x
 
 n <- length(health$age)
 nbins <- 3
 
-whichbin <- c(rep(0, n))
+whichbin_age <- c(rep(0, n))
 
-range.age_EW <- max(age_EW) - min(age_EW) + 1
-binwidth <- round(range.age_EW / nbins)
+range.age <- max(health$age) - min(health$age) + 1
+binwidth <- round(range.age / nbins)
 for(i in 1:nbins) {
   for(j in 1:n) {
-    if ((i-1)*binwidth < age_EW[j] && age_EW[j] <= (i)*binwidth)
-      whichbin[j] <- i
+    if ((i-1)*binwidth < health$age[j] && health$age[j] <= (i)*binwidth)
+      whichbin_age[j] <- i
   }
 }
-whichbin
-age_EW
-
+whichbin_age
 
 #http://www.learnbymarketing.com/tutorials/k-means-clustering-in-r-example/
 #K-means clustering, package 'stats' used
@@ -217,7 +223,6 @@ k$withinss
 k$betweenss
 #Count of data points in each cluster
 table(k$cluster)
-
 
 
 #Choose a skewed numeric variable - Oldpeak is most skewed variable
