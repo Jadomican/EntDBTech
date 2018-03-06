@@ -97,20 +97,20 @@ class <- health$class
 
 #Correlation between predictor variables
 d <- data.frame(age=rnorm(308),
-                sex=rnorm(308),
-                cp=rnorm(308),
-                trestbps=rnorm(308),
-                cholesterol=rnorm(308),
-                Fasting.blood.sugar...120=rnorm(308),
-                restecg=rnorm(308),
-                diastbpexerc=rnorm(308),
-                thalach=rnorm(308),
-                exang=rnorm(308),
-                oldpeak=rnorm(308),
-                slope=rnorm(308),
-                ca=rnorm(308),
-                thal=rnorm(308),
-                class=rnorm(308))
+  sex=rnorm(308),
+  cp=rnorm(308),
+  trestbps=rnorm(308),
+  cholesterol=rnorm(308),
+  Fasting.blood.sugar...120=rnorm(308),
+  restecg=rnorm(308),
+  diastbpexerc=rnorm(308),
+  thalach=rnorm(308),
+  exang=rnorm(308),
+  oldpeak=rnorm(308),
+  slope=rnorm(308),
+  ca=rnorm(308),
+  thal=rnorm(308),
+  class=rnorm(308))
 M <- cor(d)
 corrplot(M,method = 'ellipse')
 
@@ -254,33 +254,29 @@ apply(health,2,pMiss)
 
 
 #Health dataset containing the normalised oldpeak values
-health_normalised <- data.frame(age,
-sex,
-cp,
-trestbps,
-cholesterol,
-Fasting.blood.sugar...120,
-restecg,
-diastbpexerc,
-thalach,
-exang,
-sqrt.oldpeak,
-slope,
-ca,
-thal,
-class
+health_normalised <- data.frame(
+  age,
+  sex,
+  cp,
+  trestbps,
+  cholesterol,
+  Fasting.blood.sugar...120,
+  restecg,
+  diastbpexerc,
+  thalach,
+  exang,
+  sqrt.oldpeak,
+  slope,
+  ca,
+  thal,
+  class
 )
 
 #Parameter m is the number of imputed datasets
-imputedData <- mice(health_normalised,m=100,maxit=25,seed=504)
+imputedData <- mice(health_normalised,m=100,maxit=25,seed=505)
 summary(imputedData)
 
 #The imputed data for restecg, displays all imputed datasets (5 passthroughs in this case)
 imputedData$imp$restecg
-
 Mode(imputedData$imp$restecg)
-
-
-
-
 
