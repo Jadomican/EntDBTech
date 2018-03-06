@@ -4,7 +4,7 @@
 
 
 # Read in data from the csv dataset (Hosted on Google Drive)
-health <- read.table(file = "https://drive.google.com/uc?export=download&id=1KBKBW61L-ulGX83Ib31k-1-gfW2Zn8ZV", header=TRUE, sep =",", stringsAsFactors = FALSE)
+health <- read.table(file = "https://drive.google.com/uc?export=download&id=1KBKBW61L-ulGX83Ib31k-1-gfW2Zn8ZV", header=TRUE, sep =",", stringsAsFactors = TRUE)
 
 #Include libraries
 library(nortest)
@@ -13,6 +13,7 @@ library(stats)
 library(e1071)
 library(corrplot)
 library(classInt)
+library(mice)
 
 # Get the summary of the entire health dataset (Min, Max, Mean and Median provided here)
 summary(health)
@@ -173,7 +174,7 @@ PlotScatterPair(health$age, health$cholesterol, "Age", "Cholesterol")
 PlotScatterPair(health$age, health$diastbpexerc, "Age", "Diastolic exercising blood pressure")
 PlotScatterPair(health$age, health$thalach, "Age", "Maximum heart rate achieved")
 PlotScatterPair(health$age, health$oldpeak, "Age", "ST depression induced by exercise relative to rest")
-PlotScatterPair(health$trestbps, health$cholestorol, "Resting Blood Pressure", "Cholesterol")
+PlotScatterPair(health$trestbps, health$cholesterol, "Resting Blood Pressure", "Cholesterol")
 PlotScatterPair(health$trestbps, health$diastbpexerc, "Resting Blood Pressure", "Diastolic exercising blood pressure")
 PlotScatterPair(health$trestbps, health$thalach, "Resting Blood Pressure", "Maximum heart rate achieved")
 PlotScatterPair(health$trestbps, health$oldpeak, "Resting Blood Pressure", "ST depression induced by exercise relative to rest")
@@ -245,3 +246,14 @@ Skewness(sqrt.oldpeak)
 Skewness(natlog.oldpeak)
 Skewness(invsqrt.oldpeak)
 
+#Impute missing data for a categorical variable
+#https://www.r-bloggers.com/imputing-missing-data-with-r-mice-package/
+pMiss <- function(x){sum(is.na(x))/length(x)*100}
+apply(health,2,pMiss)
+
+#Parameter m is the number of imputed datasets
+imputedData <- mice(health,m=5,maxit=50,seed=500)
+summary(imputedData)
+
+#The imputed data for restecg, displays all imputed datasets (5 passthroughs in this case)
+imputedData$imp$restecg
