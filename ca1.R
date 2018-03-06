@@ -2,9 +2,10 @@
 # X00119321 Jason Domican
 # X00123156 Robert Fitzgerald
 
-
 # Read in data from the csv dataset (Hosted on Google Drive)
 health <- read.table(file = "https://drive.google.com/uc?export=download&id=1KBKBW61L-ulGX83Ib31k-1-gfW2Zn8ZV", header=TRUE, sep =",", stringsAsFactors = TRUE)
+#The original health dataset (contains some NA values)
+health_original <- read.table(file = "https://drive.google.com/uc?export=download&id=17bHVJflRAzaPcAIeYNaPRmbcvQGuafhB ", header=TRUE, sep =",", stringsAsFactors = FALSE)
 
 #Include libraries
 library(nortest)
@@ -251,9 +252,35 @@ Skewness(invsqrt.oldpeak)
 pMiss <- function(x){sum(is.na(x))/length(x)*100}
 apply(health,2,pMiss)
 
+
+#Health dataset containing the normalised oldpeak values
+health_normalised <- data.frame(age,
+sex,
+cp,
+trestbps,
+cholesterol,
+Fasting.blood.sugar...120,
+restecg,
+diastbpexerc,
+thalach,
+exang,
+sqrt.oldpeak,
+slope,
+ca,
+thal,
+class
+)
+
 #Parameter m is the number of imputed datasets
-imputedData <- mice(health,m=5,maxit=50,seed=500)
+imputedData <- mice(health_normalised,m=100,maxit=25,seed=504)
 summary(imputedData)
 
 #The imputed data for restecg, displays all imputed datasets (5 passthroughs in this case)
 imputedData$imp$restecg
+
+Mode(imputedData$imp$restecg)
+
+
+
+
+
