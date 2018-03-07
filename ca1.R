@@ -5,7 +5,9 @@
 # Read in data from the csv dataset (Hosted on Google Drive)
 health <- read.table(file = "https://drive.google.com/uc?export=download&id=1KBKBW61L-ulGX83Ib31k-1-gfW2Zn8ZV", header=TRUE, sep =",", stringsAsFactors = TRUE)
 #The original health dataset (contains some NA values)
-health_original <- read.table(file = "https://drive.google.com/uc?export=download&id=17bHVJflRAzaPcAIeYNaPRmbcvQGuafhB ", header=TRUE, sep =",", stringsAsFactors = FALSE)
+health_original <- read.table(file = "https://drive.google.com/uc?export=download&id=17bHVJflRAzaPcAIeYNaPRmbcvQGuafhB", header=TRUE, sep =",", stringsAsFactors = TRUE)
+#The health dataset with the duplicate values fixed (m, f, male, female & whitespace in 'Asymptomatic')
+health_standardised <- read.table(file = "https://drive.google.com/uc?export=download&id=1qNGxTzfJGRiZH1sjyvzf1c95p30fUQ-a", header=TRUE, sep =",", stringsAsFactors = TRUE)
 
 #Include libraries
 library(nortest)
