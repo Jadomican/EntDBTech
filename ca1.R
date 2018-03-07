@@ -19,13 +19,13 @@ library(classInt)
 library(mice)
 
 # Get the summary of the entire health dataset (Min, Max, Mean and Median provided here)
-summary(health)
+summary(health_standardised)
 
 #Percentage of missing values of whole data frame
-mean(is.na(health)) * 100
+mean(is.na(health_standardised)) * 100
 
 #Discretise variable for number of coloured vessels (originally numeric)
-ca_factor <- factor(health$ca)
+ca_factor <- factor(health_standardised$ca)
 
 
 #https://stackoverflow.com/questions/2547402/is-there-a-built-in-function-for-finding-the-mode
@@ -36,86 +36,49 @@ Mode <- function(x) {
 }
 
 #Call mode function on each attribute
-Mode(health$age)
-Mode(health$sex)
-Mode(health$cp)
-Mode(health$trestbps)
-Mode(health$cholesterol)
-Mode(health$Fasting.blood.sugar...120)
-Mode(health$restecg)
-Mode(health$diastbpexerc)
-Mode(health$thalach)
-Mode(health$exang)
-Mode(health$oldpeak)
-Mode(health$slope)
+Mode(health_standardised$age)
+Mode(health_standardised$sex)
+Mode(health_standardised$cp)
+Mode(health_standardised$trestbps)
+Mode(health_standardised$cholesterol)
+Mode(health_standardised$Fasting.blood.sugar...120)
+Mode(health_standardised$restecg)
+Mode(health_standardised$diastbpexerc)
+Mode(health_standardised$thalach)
+Mode(health_standardised$exang)
+Mode(health_standardised$oldpeak)
+Mode(health_standardised$slope)
 Mode(ca_factor)
-Mode(health$thal)
-Mode(health$class)
+Mode(health_standardised$thal)
+Mode(health_standardised$class)
 
 
 #Calculate the (median) standard deviations for each relevant field
-sd(health$age)
-sd(health$trestbps)
-sd(health$cholesterol, na.rm = TRUE)
-sd(health$diastbpexerc)
-sd(health$thalach)
-sd(health$oldpeak)
+sd(health_standardised$age)
+sd(health_standardised$trestbps)
+sd(health_standardised$cholesterol, na.rm = TRUE)
+sd(health_standardised$diastbpexerc)
+sd(health_standardised$thalach)
+sd(health_standardised$oldpeak)
 
 
 #Uses nortest package to determine Normality
-ad.test(health$age)
-ad.test(health$trestbps)
-ad.test(health$cholesterol)
-ad.test(health$diastbpexerc)
-ad.test(health$thalach)
-ad.test(health$oldpeak)
+ad.test(health_standardised$age)
+ad.test(health_standardised$trestbps)
+ad.test(health_standardised$cholesterol)
+ad.test(health_standardised$diastbpexerc)
+ad.test(health_standardised$thalach)
+ad.test(health_standardised$oldpeak)
+
 
 #Uses the Shapiro-Wilks test to determine normality. If the p-value is > 0.05, passes 
 #normality test and allows you to state no significant departure from normality was found
-shapiro.test(health$age)
-shapiro.test(health$trestbps)
-shapiro.test(health$cholesterol)
-shapiro.test(health$diastbpexerc)
-shapiro.test(health$thalach)
-shapiro.test(health$oldpeak)
-
-
-age <- health$age
-sex <- health$sex
-cp <- health$cp
-trestbps<- health$trestbps
-cholesterol <- health$cholesterol
-Fasting.blood.sugar...120 <- health$Fasting.blood.sugar...120
-restecg <- health$restecg
-diastbpexerc <- health$diastbpexerc
-thalach <- health$thalach
-exang <- health$exang
-oldpeak <- health$oldpeak
-slope<- health$slope
-ca <- health$ca
-thal <- health$thal
-class <- health$class
-
-
-#Correlation between predictor variables
-d <- data.frame(age=rnorm(308),
-  sex=rnorm(308),
-  cp=rnorm(308),
-  trestbps=rnorm(308),
-  cholesterol=rnorm(308),
-  Fasting.blood.sugar...120=rnorm(308),
-  restecg=rnorm(308),
-  diastbpexerc=rnorm(308),
-  thalach=rnorm(308),
-  exang=rnorm(308),
-  oldpeak=rnorm(308),
-  slope=rnorm(308),
-  ca=rnorm(308),
-  thal=rnorm(308),
-  class=rnorm(308))
-M <- cor(d)
-corrplot(M,method = 'ellipse')
-
+shapiro.test(health_standardised$age)
+shapiro.test(health_standardised$trestbps)
+shapiro.test(health_standardised$cholesterol)
+shapiro.test(health_standardised$diastbpexerc)
+shapiro.test(health_standardised$thalach)
+shapiro.test(health_standardised$oldpeak)
 
 #Define a function to calculate skewness
 Skewness <- function(x) {
@@ -126,12 +89,49 @@ Skewness <- function(x) {
 }
 
 #Call skewness function on each numeric attribute
-Skewness(health$age)
-Skewness(health$trestbps)
-Skewness(health$cholesterol)
-Skewness(health$diastbpexerc)
-Skewness(health$thalach)
-Skewness(health$oldpeak)
+Skewness(health_standardised$age)
+Skewness(health_standardised$trestbps)
+Skewness(health_standardised$cholesterol)
+Skewness(health_standardised$diastbpexerc)
+Skewness(health_standardised$thalach)
+Skewness(health_standardised$oldpeak)
+
+age <- health_standardised$age
+sex <- health_standardised$sex
+cp <- health_standardised$cp
+trestbps<- health_standardised$trestbps
+cholesterol <- health_standardised$cholesterol
+Fasting.blood.sugar...120 <- health_standardised$Fasting.blood.sugar...120
+restecg <- health_standardised$restecg
+diastbpexerc <- health_standardised$diastbpexerc
+thalach <- health_standardised$thalach
+exang <- health_standardised$exang
+oldpeak <- health_standardised$oldpeak
+slope<- health_standardised$slope
+ca <- factor(health_standardised$ca)
+thal <- health_standardised$thal
+class <- health_standardised$class
+
+
+#Correlation between predictor variables
+d <- data.frame(
+  age,
+  sex=rnorm(308),
+  cp=rnorm(308),
+  trestbps,
+  cholesterol,
+  Fasting.blood.sugar...120=rnorm(308),
+  restecg=rnorm(308),
+  diastbpexerc,
+  thalach,
+  exang=rnorm(308),
+  oldpeak,
+  slope=rnorm(308),
+  ca=rnorm(308),
+  thal=rnorm(308),
+  class=rnorm(308))
+M <- cor(d)
+corrplot(M,method = 'ellipse', type = "lower")
 
 
 # Histogram Function, Plots histogram with target variable overlay
