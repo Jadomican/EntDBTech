@@ -96,41 +96,24 @@ Skewness(health_standardised$diastbpexerc)
 Skewness(health_standardised$thalach)
 Skewness(health_standardised$oldpeak)
 
-age <- health_standardised$age
-sex <- health_standardised$sex
-cp <- health_standardised$cp
-trestbps<- health_standardised$trestbps
-cholesterol <- health_standardised$cholesterol
-Fasting.blood.sugar...120 <- health_standardised$Fasting.blood.sugar...120
-restecg <- health_standardised$restecg
-diastbpexerc <- health_standardised$diastbpexerc
-thalach <- health_standardised$thalach
-exang <- health_standardised$exang
-oldpeak <- health_standardised$oldpeak
-slope<- health_standardised$slope
-ca <- factor(health_standardised$ca)
-thal <- health_standardised$thal
-class <- health_standardised$class
-
-
 #Correlation between predictor variables
-d <- data.frame(
-  age,
-  sex=rnorm(308),
-  cp=rnorm(308),
-  trestbps,
-  cholesterol,
-  Fasting.blood.sugar...120=rnorm(308),
-  restecg=rnorm(308),
-  diastbpexerc,
-  thalach,
-  exang=rnorm(308),
-  oldpeak,
-  slope=rnorm(308),
-  ca=rnorm(308),
-  thal=rnorm(308),
-  class=rnorm(308))
-M <- cor(d)
+health_correlation <- data.frame(
+  health_standardised$age,
+  as.integer(health_standardised$sex),
+  as.integer(health_standardised$cp),
+  health_standardised$trestbps,
+  health_standardised$cholesterol,
+  as.integer(health_standardised$Fasting.blood.sugar...120),
+  as.integer(health_standardised$restecg),
+  health_standardised$diastbpexerc,
+  health_standardised$thalach,
+  as.integer(health_standardised$exang),
+  health_standardised$oldpeak,
+  as.integer(health_standardised$slope),
+  as.integer(health_standardised$ca),
+  as.integer(health_standardised$thalach),
+  as.integer(health_standardised$class))
+M <- cor(health_correlation)
 corrplot(M,method = 'ellipse', type = "lower")
 
 
