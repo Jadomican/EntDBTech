@@ -122,18 +122,18 @@ corrplot(M,method = 'square', type = "lower")
 
 
 # Histogram Function, Plots histogram with target variable overlay
-PlotHistogram <- function(myData, labelIn) {
+PlotHistogram <- function(myData, labelIn, binwidthIn) {
   ggplot(health, aes(x = myData)) + 
-    geom_histogram(colour = "black", aes(fill = health$class), position = "dodge", binwidth = 4) + xlab(labelIn)
+    geom_histogram(colour = "black", aes(fill = health$class), position = "dodge", binwidth = binwidthIn) + xlab(labelIn) + ylab("Count")
 }
 
 # Plot Histograms for each numeric attribute
-PlotHistogram(health$age, "Age")
-PlotHistogram(health$trestbps, "Resting Blood Pressure")
-PlotHistogram(health$cholesterol, "Cholesterol")
-PlotHistogram(health$diastbpexerc, "Diastolic exercising blood pressure")
-PlotHistogram(health$thalach, "Maximum heart rate achieved")
-PlotHistogram(health$oldpeak, "ST depression induced by exercise relative to rest")
+PlotHistogram(health$age, "Age", 4)
+PlotHistogram(health$trestbps, "Resting Blood Pressure", 4)
+PlotHistogram(health$cholesterol, "Cholesterol", 50)
+PlotHistogram(health$diastbpexerc, "Diastolic exercising blood pressure", 4)
+PlotHistogram(health$thalach, "Maximum heart rate achieved", 4)
+PlotHistogram(health$oldpeak, "ST depression induced by exercise relative to rest", 4)
 
 # Plotbar Function, Plots Bar chart with target variable overlay
 PlotBar <- function(myData, labelIn) {
