@@ -2,12 +2,9 @@
 # X00119321 Jason Domican
 # X00123156 Robert Fitzgerald
 
-# Read in data from the csv dataset (Hosted on Google Drive)
-health <- read.table(file = "https://drive.google.com/uc?export=download&id=1KBKBW61L-ulGX83Ib31k-1-gfW2Zn8ZV", header=TRUE, sep =",", stringsAsFactors = TRUE)
-#The original health dataset (contains some NA values)
+# Read in data from the original csv dataset (Hosted on Google Drive)
 health_original <- read.table(file = "https://drive.google.com/uc?export=download&id=17bHVJflRAzaPcAIeYNaPRmbcvQGuafhB", header=TRUE, sep =",", stringsAsFactors = TRUE)
-#The health dataset with the duplicate values fixed (m, f, male, female & whitespace in 'Asymptomatic')
-health_standardised <- read.table(file = "https://drive.google.com/uc?export=download&id=1qNGxTzfJGRiZH1sjyvzf1c95p30fUQ-a", header=TRUE, sep =",", stringsAsFactors = TRUE)
+columns <- c("age","sex","cp","trestbps","cholesterol","Fasting blood sugar","restecg","diastbpexerc","thalach","exang","oldpeak","slope","ca","thal","class")
 
 #Include libraries
 library(nortest)
@@ -18,15 +15,25 @@ library(corrplot)
 library(classInt)
 library(mice)
 
+#Get the summary of the original dataset, noting NA values and other inconsistencies
+summary(health_original)
+
+#Fix issues in the Sex, Chest Pain and Coloured Artery fields
+health <- data.frame(health_original)
+health[health=="f"]<-"Female"
+health[health=="m"]<-"Male"
+health[health==" Asymptomatic"]<-"Asymptomatic"
+#Remove unnecessary factor levels
+health$sex <- factor(health$sex)
+health$cp <- factor(health$cp)
+#Discretise variable for number of coloured vessels (originally numeric)
+health$ca <- factor(health$ca)
+
 # Get the summary of the entire health dataset (Min, Max, Mean and Median provided here)
-summary(health_standardised)
+summary(health)
 
 #Percentage of missing values of whole data frame
-mean(is.na(health_standardised)) * 100
-
-#Discretise variable for number of coloured vessels (originally numeric)
-ca_factor <- factor(health_standardised$ca)
-
+mean(is.na(health)) * 100
 
 #https://stackoverflow.com/questions/2547402/is-there-a-built-in-function-for-finding-the-mode
 #Mode function to calculate the mode of attributes
@@ -36,83 +43,80 @@ Mode <- function(x) {
 }
 
 #Call mode function on each attribute
-Mode(health_standardised$age)
-Mode(health_standardised$sex)
-Mode(health_standardised$cp)
-Mode(health_standardised$trestbps)
-Mode(health_standardised$cholesterol)
-Mode(health_standardised$Fasting.blood.sugar...120)
-Mode(health_standardised$restecg)
-Mode(health_standardised$diastbpexerc)
-Mode(health_standardised$thalach)
-Mode(health_standardised$exang)
-Mode(health_standardised$oldpeak)
-Mode(health_standardised$slope)
-Mode(ca_factor)
-Mode(health_standardised$thal)
-Mode(health_standardised$class)
-
+Mode(health$age)
+Mode(health$sex)
+Mode(health$cp)
+Mode(health$trestbps)
+Mode(health$cholesterol)
+Mode(health$Fasting.blood.sugar...120)
+Mode(health$restecg)
+Mode(health$diastbpexerc)
+Mode(health$thalach)
+Mode(health$exang)
+Mode(health$oldpeak)
+Mode(health$slope)
+Mode(health$ca)
+Mode(health$thal)
+Mode(health$class)
 
 #Calculate the (median) standard deviations for each relevant field
-sd(health_standardised$age)
-sd(health_standardised$trestbps)
-sd(health_standardised$cholesterol, na.rm = TRUE)
-sd(health_standardised$diastbpexerc)
-sd(health_standardised$thalach)
-sd(health_standardised$oldpeak)
-
+sd(health$age)
+sd(health$trestbps)
+sd(health$cholesterol, na.rm = TRUE)
+sd(health$diastbpexerc)
+sd(health$thalach)
+sd(health$oldpeak)
 
 #Uses nortest package to determine Normality
-ad.test(health_standardised$age)
-ad.test(health_standardised$trestbps)
-ad.test(health_standardised$cholesterol)
-ad.test(health_standardised$diastbpexerc)
-ad.test(health_standardised$thalach)
-ad.test(health_standardised$oldpeak)
-
+ad.test(health$age)
+ad.test(health$trestbps)
+ad.test(health$cholesterol)
+ad.test(health$diastbpexerc)
+ad.test(health$thalach)
+ad.test(health$oldpeak)
 
 #Uses the Shapiro-Wilks test to determine normality. If the p-value is > 0.05, passes 
 #normality test and allows you to state no significant departure from normality was found
-shapiro.test(health_standardised$age)
-shapiro.test(health_standardised$trestbps)
-shapiro.test(health_standardised$cholesterol)
-shapiro.test(health_standardised$diastbpexerc)
-shapiro.test(health_standardised$thalach)
-shapiro.test(health_standardised$oldpeak)
+shapiro.test(health$age)
+shapiro.test(health$trestbps)
+shapiro.test(health$cholesterol)
+shapiro.test(health$diastbpexerc)
+shapiro.test(health$thalach)
+shapiro.test(health$oldpeak)
 
 #Define a function to calculate skewness
 Skewness <- function(x) {
-  #return (3 * (mean(x, na.rm = TRUE) - median(x, na.rm = TRUE))) / sd(x, na.rm = TRUE)
-  
   #Call e1071 package
   return (skewness(x, na.rm = TRUE))
 }
 
 #Call skewness function on each numeric attribute
-Skewness(health_standardised$age)
-Skewness(health_standardised$trestbps)
-Skewness(health_standardised$cholesterol)
-Skewness(health_standardised$diastbpexerc)
-Skewness(health_standardised$thalach)
-Skewness(health_standardised$oldpeak)
+Skewness(health$age)
+Skewness(health$trestbps)
+Skewness(health$cholesterol)
+Skewness(health$diastbpexerc)
+Skewness(health$thalach)
+Skewness(health$oldpeak)
 
 #Correlation between predictor variables
 health_correlation <- data.frame(
-  health_standardised$age,
-  as.integer(health_standardised$sex),
-  as.integer(health_standardised$cp),
-  health_standardised$trestbps,
-  health_standardised$cholesterol,
-  as.integer(health_standardised$Fasting.blood.sugar...120),
-  as.integer(health_standardised$restecg),
-  health_standardised$diastbpexerc,
-  health_standardised$thalach,
-  as.integer(health_standardised$exang),
-  health_standardised$oldpeak,
-  as.integer(health_standardised$slope),
-  as.integer(health_standardised$ca),
-  as.integer(health_standardised$thalach),
-  as.integer(health_standardised$class))
+  health$age,
+  as.integer(health$sex),
+  as.integer(health$cp),
+  health$trestbps,
+  health$cholesterol,
+  as.integer(health$Fasting.blood.sugar...120),
+  as.integer(health$restecg),
+  health$diastbpexerc,
+  health$thalach,
+  as.integer(health$exang),
+  health$oldpeak,
+  as.integer(health$slope),
+  as.integer(health$ca),
+  as.integer(health$thalach)
+)
+#Assign more readable column names to the data frame, excluding the target variable
+colnames(health_correlation) <- columns[1:14]
 M <- cor(health_correlation)
 corrplot(M,method = 'ellipse', type = "lower")
 
@@ -120,7 +124,7 @@ corrplot(M,method = 'ellipse', type = "lower")
 # Histogram Function, Plots histogram with target variable overlay
 PlotHistogram <- function(myData, labelIn) {
   ggplot(health, aes(x = myData, fill = health$class)) + 
-  geom_histogram(colour = "black", position = "fill") + xlab(labelIn)
+    geom_histogram(colour = "black", position = "fill") + xlab(labelIn)
 }
 
 # Plot Histograms for each numeric attribute
@@ -131,11 +135,10 @@ PlotHistogram(health$diastbpexerc, "Diastolic exercising blood pressure")
 PlotHistogram(health$thalach, "Maximum heart rate achieved")
 PlotHistogram(health$oldpeak, "ST depression induced by exercise relative to rest")
 
-
 # Plotbar Function, Plots Bar chart with target variable overlay
 PlotBar <- function(myData, labelIn) {
   ggplot(health, aes(x = myData, fill = health$class)) +
-  geom_bar(colour = "black", position = "fill") + xlab(labelIn)
+    geom_bar(colour = "black", position = "fill") + xlab(labelIn)
 }
 
 # Plot bar chart for each categorical attribute
@@ -146,7 +149,7 @@ PlotBar(health$restecg, "Restecg")
 PlotBar(health$exang, "Exang")
 PlotBar(health$slope, "Slope")
 PlotBar(health$thal, "Thal")
-PlotBar(ca_factor, "Number of miscoloured blood vessels")
+PlotBar(health$ca, "Number of miscoloured blood vessels")
 
 
 # PlotScatterPair Function
@@ -174,8 +177,7 @@ PlotScatterPair(health$thalach, health$oldpeak, "Maximum heart rate achieved", "
 
 #Equal with binning, library("classInt")
 classIntervals(health$age, 5)
-x <- classIntervals(health$age, 5, style = 'equal')
-x
+classIntervals(health$age, 5, style = 'equal')
 
 n <- length(health$age)
 nbins <- 3
@@ -210,7 +212,6 @@ table(k$cluster)
 
 
 #Choose a skewed numeric variable - Oldpeak is most skewed variable
-
 #Z-score Standardisation
 oldpeak_z <- scale(health$oldpeak, center = TRUE, scale = TRUE)
 
@@ -232,36 +233,28 @@ Skewness(sqrt.oldpeak)
 Skewness(natlog.oldpeak)
 Skewness(invsqrt.oldpeak)
 
+#Health dataset containing the normalised oldpeak values
+health_normalised <- data.frame(health)
+health_normalised$oldpeak <- sqrt.oldpeak
+#Rename column to reflect Square Root transformation
+names(health_normalised)[names(health_normalised) == 'oldpeak'] <- 'sqrt.oldpeak'
+
 #Impute missing data for a categorical variable
 #https://www.r-bloggers.com/imputing-missing-data-with-r-mice-package/
 pMiss <- function(x){sum(is.na(x))/length(x)*100}
 apply(health,2,pMiss)
 
-
-#Health dataset containing the normalised oldpeak values
-health_normalised <- data.frame(
-  age,
-  sex,
-  cp,
-  trestbps,
-  cholesterol,
-  Fasting.blood.sugar...120,
-  restecg,
-  diastbpexerc,
-  thalach,
-  exang,
-  sqrt.oldpeak,
-  slope,
-  ca,
-  thal,
-  class
-)
-
 #Parameter m is the number of imputed datasets
 imputedData <- mice(health_normalised,m=100,maxit=25,seed=505)
-summary(imputedData)
 
 #The imputed data for restecg, displays all imputed datasets (5 passthroughs in this case)
 imputedData$imp$restecg
 Mode(imputedData$imp$restecg)
+summary(imputedData)
 
+#Replace NA values with the median/ mode
+health_normalised[c("cholesterol")][is.na(health_normalised[c("cholesterol")])]<- 
+  median(health_normalised$cholesterol, na.rm = TRUE)
+
+health_normalised[c("class")][is.na(health_normalised[c("class")])]<- 
+  Mode(health_normalised$class)
