@@ -138,7 +138,7 @@ PlotHistogram(health$oldpeak, "ST depression induced by exercise relative to res
 # Plotbar Function, Plots Bar chart with target variable overlay
 PlotBar <- function(myData, labelIn) {
   ggplot(health, aes(x = myData, fill = health$class)) +
-    geom_bar(colour = "black", position = "fill") + xlab(labelIn)
+    geom_bar(colour = "black", aes(fill = health$class), position = "dodge") + xlab(labelIn)
 }
 
 # Plot bar chart for each categorical attribute
