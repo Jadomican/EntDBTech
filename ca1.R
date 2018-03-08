@@ -118,7 +118,7 @@ health_correlation <- data.frame(
 #Assign more readable column names to the data frame, excluding the target variable
 colnames(health_correlation) <- columns[1:14]
 M <- cor(health_correlation)
-corrplot(M,method = 'ellipse', type = "lower")
+corrplot(M,method = 'square', type = "lower")
 
 
 # Histogram Function, Plots histogram with target variable overlay
@@ -244,17 +244,22 @@ names(health_normalised)[names(health_normalised) == 'oldpeak'] <- 'sqrt.oldpeak
 pMiss <- function(x){sum(is.na(x))/length(x)*100}
 apply(health,2,pMiss)
 
-#Parameter m is the number of imputed datasets
-imputedData <- mice(health_normalised,m=100,maxit=25,seed=505)
-
-#The imputed data for restecg, displays all imputed datasets (5 passthroughs in this case)
-imputedData$imp$restecg
-Mode(imputedData$imp$restecg)
-summary(imputedData)
-
 #Replace NA values with the median/ mode
 health_normalised[c("cholesterol")][is.na(health_normalised[c("cholesterol")])]<- 
   median(health_normalised$cholesterol, na.rm = TRUE)
 
 health_normalised[c("class")][is.na(health_normalised[c("class")])]<- 
   Mode(health_normalised$class)
+
+#Parameter m is the number of imputed datasets
+imputedData <- mice(health_normalised,m=50,maxit=25,seed=505)
+
+#The imputed data for restecg, displays all imputed datasets (5 passthroughs in this case)
+imputedData$imp$restecg
+Mode(imputedData$imp$restecg)
+summary(imputedData)
+
+#Replace missing restecg values with the most commonly generated imputed values
+imputedData$imp$restecg <- Mode(imputedData$imp$restecg)
+health_normalised <- complete(imputedData,1)
+health_normalised$restecg
