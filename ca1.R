@@ -123,8 +123,8 @@ corrplot(M,method = 'square', type = "lower")
 
 # Histogram Function, Plots histogram with target variable overlay
 PlotHistogram <- function(myData, labelIn) {
-  ggplot(health, aes(x = myData, fill = health$class)) + 
-    geom_histogram(colour = "black", position = "fill") + xlab(labelIn)
+  ggplot(health, aes(x = myData)) + 
+    geom_histogram(colour = "black", aes(fill = health$class), position = "dodge", binwidth = 4) + xlab(labelIn)
 }
 
 # Plot Histograms for each numeric attribute
