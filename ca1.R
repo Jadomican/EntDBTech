@@ -147,6 +147,16 @@ PlotBar(health$slope, "Slope")
 PlotBar(health$thal, "Thal")
 PlotBar(health$ca, "Number of miscoloured blood vessels")
 
+#Find outliers statistically
+quantile(health$cholesterol, na.rm = TRUE)
+
+boxplot.stats(health$age)$out
+boxplot.stats(health$trestbps)$out
+boxplot.stats(health$cholesterol)$out
+boxplot.stats(health$diastbpexerc)$out
+boxplot.stats(health$thalach)$out
+boxplot.stats(health$oldpeak)$out
+
 
 # PlotScatterPair Function
 PlotScatterPair <- function(xIn, yIn, xlabIn, ylabIn) {
