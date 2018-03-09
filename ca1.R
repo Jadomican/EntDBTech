@@ -68,7 +68,7 @@ sd(health$thalach)
 sd(health$oldpeak)
 
 #Uses nortest package to determine Normality
-#Format function to stop the print of exponent('e') values, see raw value
+#Format function to stop the print of exponent('e') values and see raw value
 format(ad.test(health$age), scientific = F)
 format(ad.test(health$trestbps), scientific = F)
 format(ad.test(health$cholesterol), scientific = F)
@@ -85,19 +85,13 @@ format(shapiro.test(health$diastbpexerc), scientific = F)
 format(shapiro.test(health$thalach), scientific = F)
 format(shapiro.test(health$oldpeak), scientific = F)
 
-#Define a function to calculate skewness
-Skewness <- function(x) {
-  #Call e1071 package
-  return (skewness(x, na.rm = TRUE))
-}
-
 #Call skewness function on each numeric attribute
-Skewness(health$age)
-Skewness(health$trestbps)
-Skewness(health$cholesterol)
-Skewness(health$diastbpexerc)
-Skewness(health$thalach)
-Skewness(health$oldpeak)
+skewness(health$age)
+skewness(health$trestbps)
+skewness(health$cholesterol, na.rm = TRUE)
+skewness(health$diastbpexerc)
+skewness(health$thalach)
+skewness(health$oldpeak)
 
 #Correlation between predictor variables
 health_correlation <- data.frame(
@@ -116,6 +110,7 @@ health_correlation <- data.frame(
   as.integer(health$ca),
   as.integer(health$thalach)
 )
+
 #Assign more readable column names to the data frame, excluding the target variable
 colnames(health_correlation) <- columns[1:14]
 M <- cor(health_correlation)
