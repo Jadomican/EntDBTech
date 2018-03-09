@@ -68,21 +68,22 @@ sd(health$thalach)
 sd(health$oldpeak)
 
 #Uses nortest package to determine Normality
-ad.test(health$age)
-ad.test(health$trestbps)
-ad.test(health$cholesterol)
-ad.test(health$diastbpexerc)
-ad.test(health$thalach)
-ad.test(health$oldpeak)
+#Format function to stop the print of exponent('e') values, see raw value
+format(ad.test(health$age), scientific = F)
+format(ad.test(health$trestbps), scientific = F)
+format(ad.test(health$cholesterol), scientific = F)
+format(ad.test(health$diastbpexerc), scientific = F)
+format(ad.test(health$thalach), scientific = F)
+format(ad.test(health$oldpeak), scientific = F)
 
 #Uses the Shapiro-Wilks test to determine normality. If the p-value is > 0.05, passes 
 #normality test and allows you to state no significant departure from normality was found
-shapiro.test(health$age)
-shapiro.test(health$trestbps)
-shapiro.test(health$cholesterol)
-shapiro.test(health$diastbpexerc)
-shapiro.test(health$thalach)
-shapiro.test(health$oldpeak)
+format(shapiro.test(health$age), scientific = F)
+format(shapiro.test(health$trestbps), scientific = F)
+format(shapiro.test(health$cholesterol), scientific = F)
+format(shapiro.test(health$diastbpexerc), scientific = F)
+format(shapiro.test(health$thalach), scientific = F)
+format(shapiro.test(health$oldpeak), scientific = F)
 
 #Define a function to calculate skewness
 Skewness <- function(x) {
