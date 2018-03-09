@@ -175,6 +175,10 @@ PlotScatterPair(health$diastbpexerc, health$thalach, "Diastolic exercising blood
 PlotScatterPair(health$diastbpexerc, health$oldpeak, "Diastolic exercising blood pressure", "ST depression induced by exercise relative to rest")
 PlotScatterPair(health$thalach, health$oldpeak, "Maximum heart rate achieved", "ST depression induced by exercise relative to rest")
 
+#Statistically verify correlation
+cor(health$trestbps, health$diastbpexerc, method = c("pearson"))
+cor(health$trestbps, health$diastbpexerc, method = c("kendall"))
+cor(health$trestbps, health$diastbpexerc, method = c("spearman"))
 
 #Equal with binning, library("classInt")
 classIntervals(health$age, 5)
