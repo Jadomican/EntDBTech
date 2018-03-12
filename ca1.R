@@ -108,13 +108,15 @@ health_correlation <- data.frame(
   health$oldpeak,
   as.integer(health$slope),
   as.integer(health$ca),
-  as.integer(health$thalach)
+  as.integer(health$thal)
 )
 
 #Assign more readable column names to the data frame, excluding the target variable
 colnames(health_correlation) <- columns[1:14]
+
+#Plot correlation data frame in corrplot to see the level of correlation among the variables
 M <- cor(health_correlation)
-corrplot(M,method = 'square', type = "lower")
+corrplot(M,method = 'shade', type = "lower")
 
 
 # Histogram Function, Plots histogram with target variable overlay
@@ -190,7 +192,6 @@ cor(health$trestbps, health$diastbpexerc, method = c("spearman"))
 nbins <- 5
 classIntervals(health$age, nbins, style = 'equal')
 
-#http://www.learnbymarketing.com/tutorials/k-means-clustering-in-r-example/
 #K-means clustering, package 'stats' used
 k <- kmeans(health$age, centers = nbins)
 whichbin_kmeans <- k$cluster
@@ -243,7 +244,6 @@ health_normalised$oldpeak <- sqrt.oldpeak
 names(health_normalised)[names(health_normalised) == 'oldpeak'] <- 'sqrt.oldpeak'
 
 #Impute missing data for a categorical variable
-#https://www.r-bloggers.com/imputing-missing-data-with-r-mice-package/
 pMiss <- function(x){sum(is.na(x))/length(x)*100}
 apply(health,2,pMiss)
 
