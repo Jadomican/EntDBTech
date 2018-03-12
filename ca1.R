@@ -185,28 +185,17 @@ cor(health$trestbps, health$diastbpexerc, method = c("pearson"))
 cor(health$trestbps, health$diastbpexerc, method = c("kendall"))
 cor(health$trestbps, health$diastbpexerc, method = c("spearman"))
 
+
 #Equal with binning, library("classInt")
-classIntervals(health$age, 5)
-classIntervals(health$age, 5, style = 'equal')
-
-n <- length(health$age)
-nbins <- 3
-
-whichbin_age <- c(rep(0, n))
-
-range.age <- max(health$age) - min(health$age) + 1
-binwidth <- round(range.age / nbins)
-for(i in 1:nbins) {
-  for(j in 1:n) {
-    if ((i-1)*binwidth < health$age[j] && health$age[j] <= (i)*binwidth)
-      whichbin_age[j] <- i
-  }
-}
-whichbin_age
+nbins <- 5
+classIntervals(health$age, nbins, style = 'equal')
 
 #http://www.learnbymarketing.com/tutorials/k-means-clustering-in-r-example/
 #K-means clustering, package 'stats' used
-k <- kmeans(health$age, centers = 4)
+k <- kmeans(health$age, centers = nbins)
+whichbin_kmeans <- k$cluster
+table(whichbin_kmeans)
+
 #Cluster centers
 k$center
 
@@ -219,7 +208,6 @@ k$withinss
 k$betweenss
 #Count of data points in each cluster
 table(k$cluster)
-
 
 #Choose a skewed numeric variable - Oldpeak is most skewed variable
 #Z-score Standardisation
