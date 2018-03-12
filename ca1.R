@@ -216,6 +216,8 @@ oldpeak_z <- scale(health$oldpeak, center = TRUE, scale = TRUE)
 #Natural Log transformation
 natlog.oldpeak <- log(health$oldpeak)
 natlog.oldpeak
+#Replace Inf values with 0
+natlog.oldpeak[!is.finite(natlog.oldpeak)] <- 0
 
 #Square Root transformation
 sqrt.oldpeak <- sqrt(health$oldpeak)
@@ -224,12 +226,15 @@ sqrt.oldpeak
 #Inverse Square Root transformation
 invsqrt.oldpeak <- 1/sqrt(health$oldpeak)
 invsqrt.oldpeak
+invsqrt.oldpeak[!is.finite(invsqrt.oldpeak)] <- 0
 
-Skewness(health$oldpeak)
-Skewness(oldpeak_z)
-Skewness(sqrt.oldpeak)
-Skewness(natlog.oldpeak)
-Skewness(invsqrt.oldpeak)
+#Original Skewness
+skewness(health$oldpeak)
+
+skewness(oldpeak_z)
+skewness(sqrt.oldpeak)
+skewness(natlog.oldpeak)
+skewness(invsqrt.oldpeak)
 
 #Health dataset containing the normalised oldpeak values
 health_normalised <- data.frame(health)
@@ -250,7 +255,7 @@ health_normalised[c("class")][is.na(health_normalised[c("class")])]<-
   Mode(health_normalised$class)
 
 #Parameter m is the number of imputed datasets
-imputedData <- mice(health_normalised,m=50,maxit=25,seed=505)
+imputedData <- mice(health_normalised,m=50,maxit=25,seed=506)
 
 #The imputed data for restecg, displays all imputed datasets (5 passthroughs in this case)
 imputedData$imp$restecg
@@ -261,3 +266,5 @@ summary(imputedData)
 imputedData$imp$restecg <- Mode(imputedData$imp$restecg)
 health_normalised <- complete(imputedData,1)
 health_normalised$restecg
+
+# Find variables which could be deleted
