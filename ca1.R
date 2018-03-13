@@ -85,6 +85,20 @@ format(shapiro.test(health$diastbpexerc), scientific = F)
 format(shapiro.test(health$thalach), scientific = F)
 format(shapiro.test(health$oldpeak), scientific = F)
 
+#PlotQ function to test for normality
+plotQ <- function(mydata) {
+  qqnorm(mydata)
+  qqline(mydata, col='red')
+}
+
+#Call the function with all numeric attributes
+plotQ(health$age)
+plotQ(health$trestbps)
+plotQ(health$cholesterol)
+plotQ(health$diastbpexerc)
+plotQ(health$thalach)
+plotQ(health$oldpeak)
+
 #Call skewness function on each numeric attribute
 skewness(health$age)
 skewness(health$trestbps)
