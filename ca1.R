@@ -32,9 +32,6 @@ health$ca <- factor(health$ca)
 # Get the summary of the entire health dataset (Min, Max, Mean and Median provided here)
 summary(health)
 
-# Percentage of missing values of whole data frame
-mean(is.na(health)) * 100
-
 # Mode function to calculate the mode of attributes
 Mode <- function(x) {
   ux <- unique(x)
