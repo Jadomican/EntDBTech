@@ -128,7 +128,6 @@ colnames(health_correlation) <- columns[1:14]
 M <- cor(health_correlation)
 corrplot(M,method = 'shade', type = "lower")
 
-
 # Histogram Function, Plots histogram with target variable overlay
 PlotHistogram <- function(myData, labelIn, binwidthIn) {
   ggplot(health, aes(x = myData)) + 
